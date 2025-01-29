@@ -1,7 +1,10 @@
 const addMessageWithDelay = (setMessages, message, delay = 1000) => {
-    setTimeout(() => {
-        setMessages((prev) => [...prev, message]);
-    }, delay);
+    return new Promise((resolve) => {
+        setTimeout(() => {
+            setMessages((prev) => [...prev, message]);
+        }, delay);
+        resolve();
+    })
 };
 
 export default addMessageWithDelay;
