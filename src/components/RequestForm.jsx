@@ -1,6 +1,6 @@
 import { useState } from "react";
 
-const RequestForm = ({ getInvite, setErrorMessage }) => {
+const RequestForm = ({ isLoading, isSended, getInvite, setErrorMessage }) => {
     const [inviteData, setInviteData] = useState({
         sender: "",
         email: "",
@@ -64,7 +64,7 @@ const RequestForm = ({ getInvite, setErrorMessage }) => {
                     placeholder="Escribe si quieres un mensaje de invitación"
                 />
             </div>
-            <button type="submit">Enviar invitación</button>
+            {!isLoading && !isSended && <button type="submit">Enviar invitación</button>}
         </form>
     );
 };
