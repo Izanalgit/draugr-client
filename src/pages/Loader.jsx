@@ -4,12 +4,12 @@ import RequestChat from "../components/RequestChat";
 
 const Loader = () => {
     
-    const { certified ,isOnChat} = useApp();
+    const { certified , isReadyToChat} = useApp();
 
     return (
         <>
-            <Handshake />
-            {certified && !isOnChat &&  <RequestChat />}
+            {!isReadyToChat && <Handshake />}
+            {certified && <RequestChat />}
         </>
     );
 };
