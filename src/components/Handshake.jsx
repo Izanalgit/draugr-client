@@ -19,8 +19,8 @@ const Handshake = () => {
     useEffect(() => {
         const startHandshake = async () => {
             const HANDSHAKE_URL = API_URL+"/api/connect";
-            addMessageWithDelay(setMessages,"Estableciendo conexión...", 0);
-            addMessageWithDelay(setMessages,"Encriptado conexión...", 100);
+            await addMessageWithDelay(setMessages,"Estableciendo conexión...", 0);
+            await addMessageWithDelay(setMessages,"Encriptado conexión...", 100);
             await initiateHandshake(HANDSHAKE_URL);
         };
 
@@ -28,18 +28,24 @@ const Handshake = () => {
     }, [initiateHandshake]);
 
     useEffect(() => {
-        if (loading) {
-            addMessageWithDelay(setMessages,"Cargando...", 500);
+        const handleHandshakeProcess = async () => {
+            if (loading) {
+                await addMessageWithDelay(setMessages,"Cargando...", 500);
+            }
+            if (error) {
+                await addMessageWithDelay(setMessages,`Error: ${error}`, 1000);
+            }
+            if(handshakeToken && csrfToken){
+                await addMessageWithDelay(setMessages,"Credenciales recibidas...",1500);
+                await addMessageWithDelay(setMessages,"Conexión establecida...",2000);
+                setTimeout(() => {
+                    saveAuthToken(handshakeToken);
+                    saveCSRFToken(csrfToken);
+                }, 2050);
+            }
         }
-        if (error) {
-            addMessageWithDelay(setMessages,`Error: ${error}`, 1000);
-        }
-        if(handshakeToken && csrfToken){
-            addMessageWithDelay(setMessages,"Credenciales recibidas...",1500);
-            saveAuthToken(handshakeToken);
-            saveCSRFToken(csrfToken);
-            addMessageWithDelay(setMessages,"Conexión establecida...",2000);
-        }
+
+        handleHandshakeProcess();
 
     },[loading,error,handshakeToken,csrfToken])
 
