@@ -15,7 +15,8 @@ const AcceptChat = ({ chatToken, userToken }) => {
         saveUserToken,
         savePrivateKey,
         savePublicKey,
-        saveCertifiedTime
+        saveCertifiedTime,
+        inviteAccept,
     } = useApp();
 
     const { fetchData, data, loading, error } = useFetchPOST();
@@ -71,6 +72,7 @@ const AcceptChat = ({ chatToken, userToken }) => {
                 await addMessageWithDelay(setMessages, `Error: ${error}`, 1500);
             } else if (data) {
                 await addMessageWithDelay(setMessages, data.message || "Credenciales aceptadas...", 2000);
+                inviteAccept();
                 setTimeout(() => {
                     savePrivateKey(data.keys.user);
                     savePublicKey(data.keys.contact);
