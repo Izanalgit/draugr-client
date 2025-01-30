@@ -1,5 +1,6 @@
 import { useApp } from "../context/AppContext";
 import CountdownTimer from "../components/CountdownTimer";
+import ChatComponent from "../components/ChatComponent";
 
 const Chat = () => {
 
@@ -10,7 +11,7 @@ const Chat = () => {
             {certified && isOnChat && isReadyToChat &&
                 <> 
                     <CountdownTimer />
-                    <p>CHAT</p>
+                    <ChatComponent />
                 </>
             }
             {!certified && <p>No tienes credenciales !</p>}
