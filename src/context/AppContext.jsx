@@ -5,6 +5,7 @@ const AppContext = createContext();
 const AppProvaider = ({ children }) => {
 
     const API_URL = import.meta.env.VITE_API_URL;
+    const API_WS = import.meta.env.VITE_API_WS;
 
     // Tokens
     const [authToken, setAuthToken] = useState(null);
@@ -20,6 +21,8 @@ const AppProvaider = ({ children }) => {
     const [certified, setCertified] = useState(false);
     const [isOnChat, setIsOnChat] = useState(false);
     const [isReadyToChat, setIsReadyToChat] = useState(false);
+    const [isInvited, setIsInvited] = useState(false);
+    const [isAccepted, setIsAccepted] = useState(false);
 
     // Time certified
     const timeLimit = 60 * 60 * 1000; // 1h on ms
@@ -32,6 +35,8 @@ const AppProvaider = ({ children }) => {
     const savePrivateKey = (key) => setPrivateKey(key);
     const savePublicKey = (key) => setPublicKey(key);
     const saveCertifiedTime = (time) => setCertifiedTime(time);
+    const inviteAccept = () => setIsInvited(true);
+    const requestAccept = () => setIsAccepted(true);
 
     useEffect(()=>{
         if(authToken && csrfToken)
@@ -71,6 +76,7 @@ const AppProvaider = ({ children }) => {
         <AppContext.Provider
             value={{
                 API_URL,
+                API_WS,
                 saveAuthToken,
                 saveCSRFToken,
                 saveChatToken,
@@ -78,6 +84,8 @@ const AppProvaider = ({ children }) => {
                 savePrivateKey,
                 savePublicKey,
                 saveCertifiedTime,
+                inviteAccept,
+                requestAccept,
                 authToken,
                 csrfToken,
                 chatToken,
@@ -87,6 +95,8 @@ const AppProvaider = ({ children }) => {
                 certified,
                 isOnChat,
                 isReadyToChat,
+                isInvited,
+                isAccepted,
                 certifiedTime,
                 timeLimit,
             }}>
