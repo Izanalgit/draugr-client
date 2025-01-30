@@ -2,7 +2,7 @@ import crypto from 'crypto';
 import { Buffer } from 'buffer';
 
 
-// Hibrid Encrypt Data with PUBLIC KEY
+// Hibrid Encrypt Data with API PUBLIC KEY
 function encryptData(data, publicKey) {
     
     const bufferData = Buffer.from(JSON.stringify(data), 'utf8');
@@ -23,13 +23,10 @@ function encryptData(data, publicKey) {
     };
 }
 
-// Decrypt Data with PRIVATE KEY
-function decryptData(encryptedData, privateKey) {
-        
-    const bufferData = Buffer.from(encryptedData, 'base64');
-    const decryptedData = crypto.privateDecrypt(privateKey, bufferData);
-    
-    return JSON.parse(decryptedData.toString('utf8'));
-}
+const sendEncryptedMessage = (socket, data, publicKey) => {
+    const encryptedPayload = encryptData(data, publicKey);
+    socket.send(JSON.stringify(encryptedPayload));
+};
 
-export {encryptData,decryptData}
+
+export {encryptData,sendEncryptedMessage}
