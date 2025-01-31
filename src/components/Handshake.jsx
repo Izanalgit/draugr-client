@@ -1,9 +1,9 @@
-import { useState, useEffect } from "react";
+import { useEffect } from "react";
 import { useApp } from "../context/AppContext";
 import useHandshake from "../hooks/useHandshake";
 import addMessageWithDelay from "../utils/addMessage";
 
-const Handshake = () => {
+const Handshake = ({setMessagesLog}) => {
 
     const {
         API_URL,
@@ -11,16 +11,19 @@ const Handshake = () => {
         saveCSRFToken,
     } = useApp()
 
-    const { initiateHandshake, csrfToken, handshakeToken, loading, error } =
-        useHandshake();
-
-    const [messages, setMessages] = useState([]);
+    const { 
+        initiateHandshake, 
+        csrfToken, 
+        handshakeToken, 
+        loading, 
+        error 
+    } = useHandshake();
 
     useEffect(() => {
         const startHandshake = async () => {
             const HANDSHAKE_URL = API_URL+"/api/connect";
-            await addMessageWithDelay(setMessages,"Estableciendo conexión...", 0);
-            await addMessageWithDelay(setMessages,"Encriptado conexión...", 100);
+            await addMessageWithDelay(setMessagesLog,"Estableciendo conexión...", 0);
+            await addMessageWithDelay(setMessagesLog,"Encriptado conexión...", 100);
             await initiateHandshake(HANDSHAKE_URL);
         };
 
@@ -30,14 +33,14 @@ const Handshake = () => {
     useEffect(() => {
         const handleHandshakeProcess = async () => {
             if (loading) {
-                await addMessageWithDelay(setMessages,"Cargando...", 500);
+                await addMessageWithDelay(setMessagesLog,"Cargando...", 500);
             }
             if (error) {
-                await addMessageWithDelay(setMessages,`Error: ${error}`, 1000);
+                await addMessageWithDelay(setMessagesLog,`Error: ${error}`, 1000);
             }
             if(handshakeToken && csrfToken){
-                await addMessageWithDelay(setMessages,"Credenciales recibidas...",1500);
-                await addMessageWithDelay(setMessages,"Conexión establecida...",2000);
+                await addMessageWithDelay(setMessagesLog,"Credenciales recibidas...",1500);
+                await addMessageWithDelay(setMessagesLog,"Conexión establecida...",2000);
                 setTimeout(() => {
                     saveAuthToken(handshakeToken);
                     saveCSRFToken(csrfToken);
@@ -49,15 +52,6 @@ const Handshake = () => {
 
     },[loading,error,handshakeToken,csrfToken])
 
-    return (
-        <div className="handshake log">
-            <pre>
-                {messages.map((msg, index) => (
-                    <p key={index}>{msg}</p>
-                ))}
-            </pre>
-        </div>
-    );
 };
 
 export default Handshake;
