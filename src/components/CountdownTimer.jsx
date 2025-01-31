@@ -32,7 +32,7 @@ const CountdownTimer = () => {
     };
 
     return (
-        <div>
+        <div className="countdown">
             {timeLeft > 0 ? (
                 <span>{formatTime(timeLeft)}</span>
             ) : (
