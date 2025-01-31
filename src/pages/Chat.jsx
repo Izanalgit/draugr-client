@@ -1,6 +1,7 @@
 import { useApp } from "../context/AppContext";
 import CountdownTimer from "../components/CountdownTimer";
 import ChatComponent from "../components/ChatComponent";
+import AutoNavigate from "../components/AutoNavigate";
 
 const Chat = () => {
 
@@ -14,7 +15,12 @@ const Chat = () => {
                     <ChatComponent />
                 </>
             }
-            {!certified && <p>No tienes credenciales !</p>}
+            {!certified && 
+                <>
+                    <p>No tienes credenciales !</p>
+                    <AutoNavigate page={'/'} delay={5000} />
+                </>
+            }
         </>
     )
 }

@@ -1,9 +1,14 @@
+import { useState } from "react";
 import { useApp } from "../context/AppContext";
 import { useLocation } from 'react-router-dom';
 import Handshake from "../components/Handshake";
 import AcceptChat from "../components/AcceptChat";
+import AutoNavigate from "../components/AutoNavigate";
+import LogComponent from "../components/LogComponent";
 
 const Response = () => {
+
+    const [messages,setMessages] = useState([]);
 
     const location = useLocation();
 
@@ -22,10 +27,20 @@ const Response = () => {
         <>
             {areTokensValid
                 ?<>
-                    {!isReadyToChat && <Handshake />}
-                    {certified &&  <AcceptChat chatToken={decodedChatToken} userToken={decodedUserToken}/>}
+                    {certified &&  
+                        <AcceptChat 
+                            chatToken={decodedChatToken} 
+                            userToken={decodedUserToken} 
+                            setMessagesLog={setMessages}
+                        />
+                    }
+                    {!isReadyToChat && <Handshake setMessagesLog={setMessages}/>}
+                    <LogComponent messages={messages} />
                 </>
-                :<p>No tienes credenciales !</p>
+                :<>
+                    <p>No tienes credenciales !</p>
+                    <AutoNavigate page={'/'} delay={5000} />
+                </>
             }
             
         </>
