@@ -11,7 +11,8 @@ const useChatWebSocket = ({
         privateKey, 
         publicKey, 
         shouldSendChatAccepted,
-        requestAccept
+        requestAccept,
+        chatClosed
     }) => {
     
     const publicKeyAPI = API_PUBLIC.replace(/\\n/g, "\n");
@@ -54,9 +55,14 @@ const useChatWebSocket = ({
                 console.log(`Chat recivido de: ${data.from}`); //CHIVATO
                 const decryptedMessage = decryptE2EE(data.message, privateKey);
                 setMessages((prev) => [...prev, { from: 'Contacto', content: decryptedMessage }]);
-            } else if (data.type === 'CHAT_ACCEPTED') {
+            }
+            if (data.type === 'CHAT_ACCEPTED') {
                 console.log(`Chat aceptado por: ${data.from}`); //CHIVATO
                 requestAccept();
+            }
+            if (data.type === 'CONTACT_DISCONNECTED') {
+                console.log(`Chat cerrado por: ${data.from}`); //CHIVATO
+                chatClosed();
             }
         };
 
@@ -66,6 +72,7 @@ const useChatWebSocket = ({
 
         ws.onclose = () => {
             console.log('Conexión WebSocket cerrada');
+            chatClosed();
         };
 
         return () => ws.close();
