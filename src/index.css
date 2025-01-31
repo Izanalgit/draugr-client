@@ -1,68 +1,227 @@
+/* Global Styles */
 :root {
-  font-family: Inter, system-ui, Avenir, Helvetica, Arial, sans-serif;
-  line-height: 1.5;
-  font-weight: 400;
-
-  color-scheme: light dark;
-  color: rgba(255, 255, 255, 0.87);
-  background-color: #242424;
-
-  font-synthesis: none;
-  text-rendering: optimizeLegibility;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-}
-
-a {
-  font-weight: 500;
-  color: #646cff;
-  text-decoration: inherit;
-}
-a:hover {
-  color: #535bf2;
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: 'Courier New', Courier, monospace;
+  color: #00FF00;
+  background-color: #000;
+  border: 1px solid #00FF00;
+  font-size: 16px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: -webkit-fill-available;
+  overflow-x: hidden;
 }
 
 body {
-  margin: 0;
+  background-color: #000;
+  color: #00FF00;
   display: flex;
-  place-items: center;
-  min-width: 320px;
-  min-height: 100vh;
-}
-
-h1 {
-  font-size: 3.2em;
-  line-height: 1.1;
+  justify-content: center;
+  align-items: center;
+  min-height: 90vh;
+  padding: 20px;
+  width: -webkit-fill-available;  
 }
 
 button {
-  border-radius: 8px;
-  border: 1px solid transparent;
-  padding: 0.6em 1.2em;
-  font-size: 1em;
-  font-weight: 500;
-  font-family: inherit;
-  background-color: #1a1a1a;
+  background-color: #000;
+  color: #00FF00;
+  border: 1px solid #00FF00;
+  padding: 5px 10px;
+  font-size: 14px;
   cursor: pointer;
-  transition: border-color 0.25s;
-}
-button:hover {
-  border-color: #646cff;
-}
-button:focus,
-button:focus-visible {
-  outline: 4px auto -webkit-focus-ring-color;
+  width: 100%;
 }
 
-@media (prefers-color-scheme: light) {
-  :root {
-    color: #213547;
-    background-color: #ffffff;
+button:hover {
+  background-color: #00FF00;
+  color: #000;
+}
+
+.disclaimer {
+  background-color: #000;
+  color: #FFD700;
+  padding: 15px;
+  border: 1px solid #00FF00;
+  font-size: 14px;
+  max-width: 600px;
+  text-align: left;
+  margin: 20px auto;
+}
+
+.disclaimer pre {
+  white-space: pre-wrap;
+  font-family: 'Courier New', Courier, monospace;
+  color: whitesmoke;
+  padding: 10px;
+  text-align: center;
+}
+
+.disclaimer p {
+  font-weight: bold;
+}
+
+.disclaimer ul {
+  padding-left: 20px;
+}
+
+.disclaimer strong {
+  color: #ff1100;
+}
+
+.disclaimer li {
+  list-style: square;
+}
+
+input[type="text"],
+input[type="email"],
+textarea {
+  background-color: #000;
+  color: #00FF00;
+  border: 1px solid #00FF00;
+  padding: 5px;
+  max-width: 300px;
+  width: -webkit-fill-available;
+}
+
+label {
+  display: block;
+  margin: 10px 0 5px;
+  color: #00FF00;
+}
+
+.form-group {
+  margin-bottom: 15px;
+}
+
+pre {
+  background-color: #000;
+  color: #00FF00;
+}
+
+.countdown {
+  font-size: 20px;
+  font-weight: bold;
+  text-align: center;
+  color: #FFD700;
+}
+
+.log {
+  padding: 0;
+  margin: 0;
+  background-color: #000;
+}
+.messages-box{
+  display: flex;
+  flex-flow: column;
+  align-items: anchor-center;
+}
+.messages {
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+    gap: 10px;
+    padding: 10px;
+    background-color: #000;
+    max-height: 400px;
+    overflow-y: auto;
+    border: 1px solid #00FF00;
+    scrollbar-width: none;
+    scroll-behavior: smooth;
+    width: -webkit-fill-available;
+    min-width: 500px;
+}
+
+.messages p {
+    display: flex;
+    align-items: center;
+    padding: 8px;
+    border-radius: 10px;
+    max-width: 100%;
+}
+
+.left-msg {
+    align-self: flex-start;
+    text-align: left;
+    flex-flow: wrap;
+}
+
+.right-msg {
+    align-self: flex-end;
+    text-align: right;
+    flex-flow: wrap;
+}
+
+.messages-box [type="text"] {
+  max-inline-size: -webkit-fill-available;
+  margin-top: 10px;
+  padding: 8px;
+}
+
+.invite-form {
+  width: 100%;
+  max-width: 400px;
+  border: 1px solid #00FF00;
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+}
+
+p {
+  margin: 5px 0;
+  color: #00FF00;
+  word-break: break-word;
+  overflow-wrap: break-word;
+}
+
+strong {
+  color: #FFD700;
+}
+
+textarea {
+  min-height: 30px;
+}
+
+
+
+@media (max-width: 600px) {
+  body {
+    padding: 10px;
   }
-  a:hover {
-    color: #747bff;
+
+  .messages {
+    max-height: 300px;
+    min-width: unset;
+    padding: 8px;
+    font-size: 14px;
   }
+
+  .messages p {
+    font-size: 14px;
+    padding: 6px;
+  }
+
+  .messages-box {
+    width: 100%;
+  }
+
+  input[type="text"] {
+    padding: 8px;
+    font-size: 14px;
+  }
+
   button {
-    background-color: #f9f9f9;
+    font-size: 14px;
+  }
+
+  .invite-form {
+    width: max-content;
+  }
+
+  strong {
+    font-size: 13px;
   }
 }
