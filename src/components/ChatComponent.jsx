@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import { useApp } from '../context/AppContext';
 import useChatWebSocket from '../hooks/useChatWebSocket';
+import AutoNavigate from './AutoNavigate';
 
 const ChatComponent = () => {
     const { 
@@ -12,7 +13,9 @@ const ChatComponent = () => {
         publicKey, 
         isInvited,
         isAccepted,
-        requestAccept
+        isClosed,
+        requestAccept,
+        chatClosed
     } = useApp();
     
     const shouldSendChatAccepted = isInvited;
@@ -25,38 +28,52 @@ const ChatComponent = () => {
         publicKey,
         privateKey, 
         shouldSendChatAccepted,
-        requestAccept 
+        requestAccept,
+        chatClosed 
     });
 
     const [inputValue, setInputValue] = useState('');
 
     return (
         <div>
-            {(!isInvited && !isAccepted) &&
-                <p>Esperando confirmación del contacto</p>
-            }
+            <div className='log'>
+                <pre>
+                    {(!isInvited && !isAccepted) &&
+                        <p>Esperando confirmación del contacto</p>
+                    }
+                    {isClosed &&
+                        <>
+                            <p>Conexión terminada !</p>
+                            <p>Limpiando memoria ...</p>
+                            <AutoNavigate page={'/'} delay={10000} />
+                        </>
+                    }
+                </pre>
+            </div>
             {(isInvited || isAccepted) &&
-                <>
-                    <div>
+                <div className='messages-box'>
+                    <div className='messages'>
                         {messages.map((msg, index) => (
-                            <p key={index}>
-                                <strong>{msg.from}:</strong> {msg.content}
+                            <p key={index} className={msg.from === 'Yo'?'left-msg':'right-msg'}>
+                                <strong>{msg.from}:</strong>{msg.content}
                             </p>
                         ))}
                     </div>
-                    <input
-                        type="text"
-                        value={inputValue}
-                        onChange={(e) => setInputValue(e.target.value)}
-                        onKeyDown={(e) => {
-                            if (e.key === 'Enter') {
-                                sendMessage(inputValue);
-                                setInputValue('');
-                            }
-                        }}
-                        placeholder="Escribe tu mensaje..."
-                    />
-                </>
+                    {!isClosed &&
+                        <input
+                            type="text"
+                            value={inputValue}
+                            onChange={(e) => setInputValue(e.target.value)}
+                            onKeyDown={(e) => {
+                                if (e.key === 'Enter') {
+                                    sendMessage(inputValue);
+                                    setInputValue('');
+                                }
+                            }}
+                            placeholder="Escribe tu mensaje..."
+                        />
+                    }
+                </div>
             }
         </div>
     );
