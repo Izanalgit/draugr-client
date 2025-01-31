@@ -1,13 +1,17 @@
 import { useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 
-const AutoNavigate = () => {
+const AutoNavigate = ({page , delay=10}) => {
 
     const navigate = useNavigate();
 
-    const handleNavigate = () => navigate('/chat');
+    const handleNavigate = () => navigate(page);
 
-    useEffect(()=>{handleNavigate()},[])
+    useEffect(()=>{
+        setTimeout(()=>{
+            handleNavigate()
+        },[delay])    
+    },[])
 
 }
 
