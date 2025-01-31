@@ -23,6 +23,7 @@ const AppProvaider = ({ children }) => {
     const [isReadyToChat, setIsReadyToChat] = useState(false);
     const [isInvited, setIsInvited] = useState(false);
     const [isAccepted, setIsAccepted] = useState(false);
+    const [isClosed, setIsClosed] = useState(false);
 
     // Time certified
     const timeLimit = 60 * 60 * 1000; // 1h on ms
@@ -37,22 +38,43 @@ const AppProvaider = ({ children }) => {
     const saveCertifiedTime = (time) => setCertifiedTime(time);
     const inviteAccept = () => setIsInvited(true);
     const requestAccept = () => setIsAccepted(true);
+    const chatClosed = () => setIsClosed(true);
+
+    const cleanItAll = () =>{
+        setAuthToken(null);
+        setCsrfToken(null);
+        setChatToken(null);
+        setUserToken(null);
+        setPrivateKey(null);
+        setPublicKey(null);
+        setCertifiedTime(null);
+        setIsInvited(false);
+        setIsAccepted(false);
+        setIsClosed(false);
+    }
 
     useEffect(()=>{
         if(authToken && csrfToken)
             setCertified(true);
+        else
+            setCertified(false);
     },[authToken,csrfToken])
 
     useEffect(()=>{
         if(chatToken && userToken)
             setIsOnChat(true);
+        else
+            setIsOnChat(false);
     },[chatToken,userToken])
 
     useEffect(()=>{
         if(privateKey && publicKey)
             setIsReadyToChat(true);
+        else
+            setIsReadyToChat(false);
     },[privateKey,publicKey])
 
+    // Clean interval
     useEffect(()=>{
         
         if (!certifiedTime) return;
@@ -62,15 +84,19 @@ const AppProvaider = ({ children }) => {
             if (elapsed >= timeLimit) {
                 clearInterval(interval);
                 setCertifiedTime(null);
-                setCertified(false);
-                setIsOnChat(false);
-                setIsReadyToChat(false);
+                cleanItAll();
             }
         }, 60000);
     
         return () => clearInterval(interval);
 
     },[certifiedTime])
+
+    // On closed contact conneciton
+    useEffect(()=>{
+        if(isClosed)
+            setTimeout(()=>{cleanItAll()},10000);
+    },[isClosed])
 
     return (
         <AppContext.Provider
@@ -86,6 +112,7 @@ const AppProvaider = ({ children }) => {
                 saveCertifiedTime,
                 inviteAccept,
                 requestAccept,
+                chatClosed,
                 authToken,
                 csrfToken,
                 chatToken,
@@ -97,6 +124,7 @@ const AppProvaider = ({ children }) => {
                 isReadyToChat,
                 isInvited,
                 isAccepted,
+                isClosed,
                 certifiedTime,
                 timeLimit,
             }}>
