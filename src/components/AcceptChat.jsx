@@ -4,7 +4,7 @@ import useFetchPOST from "../hooks/useFetchPOST";
 import AutoNavigate from "./AutoNavigate";
 import addMessageWithDelay from "../utils/addMessage";
 
-const AcceptChat = ({ chatToken, userToken }) => {
+const AcceptChat = ({ chatToken, userToken , setMessagesLog}) => {
     const { 
         API_URL, 
         authToken, 
@@ -22,12 +22,11 @@ const AcceptChat = ({ chatToken, userToken }) => {
     const { fetchData, data, loading, error } = useFetchPOST();
 
     const [acceptInvite, setAcceptInvite] = useState(false);
-    const [messages, setMessages] = useState([]);
 
     useEffect(()=>{
 
         const saveCredentials = async () => {
-            await addMessageWithDelay(setMessages, "Guardando credenciales recividas...", 100);
+            await addMessageWithDelay(setMessagesLog, "Guardando credenciales recividas...", 100);
             setTimeout(() => {
                 saveChatToken(chatToken);
                 saveUserToken(userToken);
@@ -54,7 +53,7 @@ const AcceptChat = ({ chatToken, userToken }) => {
             };
             const config = {headers: { Authorization: authToken }};
 
-            await addMessageWithDelay(setMessages, "Enviando credenciales...", 1000);
+            await addMessageWithDelay(setMessagesLog, "Enviando credenciales...", 1000);
 
             await fetchData(url, payload, config);
         };
@@ -67,11 +66,11 @@ const AcceptChat = ({ chatToken, userToken }) => {
     useEffect(() => {
         const handleAcceptResponse = async () =>{
             if (loading) {
-                await addMessageWithDelay(setMessages, "Procesando respuesta del servidor...", 0);
+                await addMessageWithDelay(setMessagesLog, "Procesando respuesta del servidor...", 0);
             } else if (error) {
-                await addMessageWithDelay(setMessages, `Error: ${error}`, 1500);
+                await addMessageWithDelay(setMessagesLog, `Error: ${error}`, 1500);
             } else if (data) {
-                await addMessageWithDelay(setMessages, data.message || "Credenciales aceptadas...", 2000);
+                await addMessageWithDelay(setMessagesLog, data.message || "Credenciales aceptadas...", 2000);
                 inviteAccept();
                 setTimeout(() => {
                     savePrivateKey(data.keys.user);
@@ -87,15 +86,7 @@ const AcceptChat = ({ chatToken, userToken }) => {
 
     return (
         <>
-            <div className="request-chat log">
-                <pre>
-                    {messages.map((msg, index) => (
-                        <p key={index}>{msg}</p>
-                    ))}
-                </pre>
-            </div>
-
-            {isOnChat && isReadyToChat && <AutoNavigate/>}
+            {isOnChat && isReadyToChat && <AutoNavigate page={'/chat'}/>}
         </>
     );
 };
