@@ -5,7 +5,7 @@ import RequestForm from "./RequestForm";
 import AutoNavigate from "./AutoNavigate";
 import addMessageWithDelay from "../utils/addMessage";
 
-const RequestChat = () => {
+const RequestChat = ({setMessagesLog}) => {
     const { 
         API_URL, 
         authToken, 
@@ -22,7 +22,6 @@ const RequestChat = () => {
     const { fetchData, data, loading, error } = useFetchPOST();
 
     const [inviteData, setInviteData] = useState(null);
-    const [messages, setMessages] = useState([]);
 
     useEffect(() => {
         const requestToUser = async () => {
@@ -37,7 +36,7 @@ const RequestChat = () => {
             };
             const config = {headers: { Authorization: authToken }};
 
-            await addMessageWithDelay(setMessages, "Enviando invitación...", 500);
+            await addMessageWithDelay(setMessagesLog, "Enviando invitación...", 500);
 
             await fetchData(url, payload, config);
         };
@@ -50,11 +49,11 @@ const RequestChat = () => {
     useEffect(() => {
         const handleInviteResponse = async () =>{
             if (loading) {
-                await addMessageWithDelay(setMessages, "Procesando solicitud...", 0);
+                await addMessageWithDelay(setMessagesLog, "Procesando solicitud...", 0);
             } else if (error) {
-                await addMessageWithDelay(setMessages, `Error: ${error}`, 1000);
+                await addMessageWithDelay(setMessagesLog, `Error: ${error}`, 1000);
             } else if (data) {
-                await addMessageWithDelay(setMessages, data.message || "Invitación enviada con éxito", 2000);
+                await addMessageWithDelay(setMessagesLog, data.message || "Invitación enviada con éxito", 2000);
                 setTimeout(() => {
                     saveChatToken(data.chatToken);
                     saveUserToken(data.userToken);
@@ -73,22 +72,16 @@ const RequestChat = () => {
 
     return (
         <>
-            <div className="request-chat log">
-                <pre>
-                    {messages.map((msg, index) => (
-                        <p key={index}>{msg}</p>
-                    ))}
-                </pre>
-            </div>
             {!isOnChat &&
                 <RequestForm
                     isLoading={loading}
                     isSended={data}
                     getInvite={setInviteData}
-                    setErrorMessage={(err) => addMessageWithDelay(setMessages, `Error: ${err}`, 0)}
+                    setErrorMessage={(err) => addMessageWithDelay(setMessagesLog, `Error: ${err}`, 0)}
                 />
             }
-            {isOnChat && isReadyToChat && <AutoNavigate/>}
+            
+            {isOnChat && isReadyToChat && <AutoNavigate page={'/chat'}/>}
         </>
     );
 };
