@@ -12,7 +12,7 @@
   justify-content: center;
   align-items: center;
   width: -webkit-fill-available;
-  overflow-x: hidden;
+  overflow: hidden;
 }
 
 body {
@@ -23,7 +23,7 @@ body {
   align-items: center;
   min-height: 90vh;
   padding: 20px;
-  width: -webkit-fill-available;  
+  width: -webkit-fill-available;
 }
 
 button {
@@ -113,7 +113,18 @@ pre {
   padding: 0;
   margin: 0;
   background-color: #000;
+  overflow: hidden;
+  margin-top: 3%;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  max-height: 200px;
 }
+.log pre{
+  max-width: 350px;
+  white-space: normal;
+}
+
 .messages-box{
   display: flex;
   flex-flow: column;
@@ -162,7 +173,7 @@ pre {
 }
 
 .invite-form {
-  width: 100%;
+  width: -webkit-fill-available;
   max-width: 400px;
   border: 1px solid #00FF00;
   padding: 20px;
@@ -223,5 +234,9 @@ textarea {
 
   strong {
     font-size: 13px;
+  }
+
+  .log pre{
+    max-width: 250px;
   }
 }
